@@ -8,8 +8,7 @@ stdenv.mkDerivation {
  RUST_BACKTRACE = 1;
 
  shellHook = ''
-  set -o allexport
-  source .env
-  set +o allexport
+  # source the .env file for environment variables
+  set -a; . .env; set +a
  '';
 }
