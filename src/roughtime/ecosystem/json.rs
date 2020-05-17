@@ -1,9 +1,9 @@
-use humm_provenance_core::json;
-use humm_provenance_core::env;
-use super::error;
+use crate::json;
+use crate::env;
+use crate::error;
 
 #[derive(Debug)]
-struct Ecosystem(json::Json);
+pub(crate) struct Ecosystem(json::Json);
 
 impl From<json::Json> for Ecosystem {
     fn from(json: json::Json) -> Self {
@@ -11,8 +11,14 @@ impl From<json::Json> for Ecosystem {
     }
 }
 
+impl From<Ecosystem> for String {
+    fn from(ecosystem: Ecosystem) -> String {
+        String::from(ecosystem.0)
+    }
+}
+
 impl std::convert::TryFrom<super::env::EcosystemJsonFilePath> for Ecosystem {
-    type Error = error::EcosystemError;
+    type Error = error::ProvenanceError;
     fn try_from(ecosystem_json_file_path: super::env::EcosystemJsonFilePath) -> Result<Self, Self::Error> {
         Ok(
             json::Json::try_from(
@@ -31,7 +37,7 @@ impl std::convert::TryFrom<super::env::EcosystemJsonFilePath> for Ecosystem {
 #[cfg(test)]
 mod test {
     use std::convert::TryFrom;
-    use crate::ecosystem::env::EcosystemJsonFilePath;
+    use crate::roughtime::ecosystem::env::EcosystemJsonFilePath;
 
     #[test]
     fn ecosystem_load() {

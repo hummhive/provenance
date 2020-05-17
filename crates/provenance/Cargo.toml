@@ -1,9 +1,0 @@
-[package]
-name = "humm_provenance"
-version = "0.0.1"
-description = "humm provenances"
-license = "MIT"
-homepage = "https://humm.earth"
-documentation = "https://github.com/hummhive/provenance"
-authors = [ "David Meister <thedavidmeister@gmail.com>" ]
-edition = "2018"

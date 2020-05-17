@@ -44,4 +44,4 @@ impl From<Val> for String {
     }
 }
 
-pub trait Var: Into<Key> + std::convert::TryInto<Val, Error=error::CoreError> { }
+pub trait Var: Into<Key> + std::convert::TryInto<Val, Error=error::ProvenanceError> { }

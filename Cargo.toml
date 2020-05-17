@@ -1,7 +1,16 @@
-[workspace]
+[package]
+name = "humm_provenance_core"
+version = "0.0.1"
+description = "low level types and traits for humm provenance"
+license = "MIT"
+homepage = "https://humm.earth"
+documentation = "https://github.com/hummhive/provenance"
+authors = [ "David Meister <thedavidmeister@gmail.com>" ]
+edition = "2018"
 
-members = [
- "crates/provenance_core",
- "crates/roughtime",
- "crates/provenance",
-]
+[dependencies]
+thiserror = "1.0.18"
+serde = { version = "1.0.110", features = [ "derive" ] }
+serde_json = "1.0.53"
+ring = "0.13"
+base64 = "0.12.1"
