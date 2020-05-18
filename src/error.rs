@@ -12,4 +12,15 @@ pub enum ProvenanceError {
     #[error("system io error: {0}")]
     Io(#[from] std::io::Error),
 
+    #[error("could not create jwt: {0}")]
+    Jwt(#[from] jwt_compact::CreationError),
+
+    #[error("could not sign")]
+    Signature
+}
+
+impl From<ed25519_dalek::SignatureError> for ProvenanceError {
+    fn from(_: ed25519_dalek::SignatureError) -> Self {
+        Self::Signature
+    }
 }

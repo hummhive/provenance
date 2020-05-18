@@ -11,7 +11,13 @@ pub(crate) enum KeyType {
 /// public keys in an ecosystem.json are 32 bytes as base64
 #[derive(Debug, Clone, Copy, serde::Serialize, serde::Deserialize)]
 #[serde(transparent)]
-pub(crate) struct Key(crypto::Ed25519Key);
+pub(crate) struct Key(crypto::Ed25519PubKey);
+
+impl From<Key> for Vec<u8> {
+    fn from(key: Key) -> Self {
+        key.0.into()
+    }
+}
 
 #[derive(serde::Serialize)]
 #[serde(transparent)]
@@ -22,5 +28,21 @@ impl From<&ecosystem::Ecosystem> for Keys {
         Self(
             ecosystem.as_ref().as_ref().iter().map(|s| s.as_ref()).cloned().collect()
         )
+    }
+}
+
+#[derive(serde::Serialize, Clone, Copy)]
+#[serde(transparent)]
+pub struct KeysHash(crypto::Sha512Hash);
+
+impl From<&ecosystem::Ecosystem> for KeysHash {
+    fn from(ecosystem: &ecosystem::Ecosystem) -> Self {
+        let mut bytes: Vec<u8> = vec![];
+        let keys = Keys::from(ecosystem);
+        for key in keys.0 {
+            let mut key_bytes: Vec<u8> = key.into();
+            bytes.append(&mut key_bytes);
+        }
+        Self((&bytes).into())
     }
 }

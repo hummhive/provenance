@@ -27,13 +27,24 @@ mod test {
         let ecosystem = roughtime::ecosystem::Ecosystem::try_from(roughtime::ecosystem::env::EcosystemJsonFilePath).unwrap();
         let content = content::Content::from(b"foo".to_vec());
 
+        let mut csprng = rand::rngs::OsRng{};
+        let idp_keypair: ed25519_dalek::Keypair = ed25519_dalek::Keypair::generate(&mut csprng);
+        let device_keypair: ed25519_dalek::Keypair = ed25519_dalek::Keypair::generate(&mut csprng);
+
+        let jwt_input = jwt::JwtInput {
+            idp_keypair: (&idp_keypair).into(),
+            device_pub_key: (&device_keypair).into(),
+            time_keys_hash: (&ecosystem).into(),
+        };
+
         let provenance = Provenance {
             version: version::Version::One,
             content_hash: (&content).into(),
             roughtime: roughtime::Roughtime {
                 public_keys: (&ecosystem).into(),
+                chain: roughtime::chain::Chain,
             },
-            jwt: jwt::Jwt,
+            jwt: jwt::Jwt::try_from(&jwt_input).unwrap(),
             device_signature: device::Signature,
         };
 

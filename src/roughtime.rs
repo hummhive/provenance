@@ -1,9 +1,11 @@
 pub mod ecosystem;
+pub mod chain;
 use ecosystem::server::public_key;
 
 #[derive(serde::Serialize)]
 pub struct Roughtime {
     pub public_keys: public_key::Keys,
+    pub chain: chain::Chain,
 }
 
 // pub mod client;

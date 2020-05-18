@@ -82,3 +82,9 @@ Also note that `ed25519` has a pure rust implementation in dalek
 
 This means we can use a single signing scheme for both times and JWTs, which is
 neat.
+
+A provenance time chain is created as:
+
+```
+ROUGHTIME(SHA512(DEVICESIGN(SHA512(SHA512(CONTENT) + TIMEPUB + JWTPUB + JWT(SHA512(TIMEPUB) + aud: DEVICEPUB)))))
+```
