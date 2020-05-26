@@ -18,6 +18,12 @@ impl From<&Content> for Hash {
     }
 }
 
+impl From<&Hash> for [u8; ring::digest::SHA512_OUTPUT_LEN] {
+    fn from(hash: &Hash) -> Self {
+        (&hash.0).into()
+    }
+}
+
 #[cfg(test)]
 mod test {
 

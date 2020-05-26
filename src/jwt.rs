@@ -7,12 +7,12 @@ use crate::error;
 use std::convert::TryInto;
 
 pub struct JwtInput {
-    pub device_pub_key: device::PubKey,
+    pub device_pub_key: device::keys::PubKey,
     pub idp_keypair: idp::Keypair,
     pub time_keys_hash: roughtime::ecosystem::server::public_key::KeysHash,
 }
 
-impl From<&JwtInput> for device::PubKey {
+impl From<&JwtInput> for device::keys::PubKey {
     fn from(input: &JwtInput) -> Self {
         input.device_pub_key
     }
@@ -43,6 +43,6 @@ impl From<&JwtInput> for roughtime::ecosystem::server::public_key::KeysHash {
 
 #[derive(serde::Serialize)]
 pub struct Jwt {
-    idp_pub_key: idp::PubKey,
-    token: token::Token,
+    pub idp_pub_key: idp::PubKey,
+    pub token: token::Token,
 }

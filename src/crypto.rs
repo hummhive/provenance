@@ -2,6 +2,7 @@ use serde::ser;
 use serde::de;
 use serde::de::Error;
 use std::convert::TryInto;
+use std::convert::TryFrom;
 use crate::error;
 
 #[derive(Clone, Copy)]
@@ -26,6 +27,12 @@ impl From<&Vec<u8>> for Sha512Hash {
     }
 }
 
+impl From<&Sha512Hash> for [u8; ring::digest::SHA512_OUTPUT_LEN]  {
+    fn from(hash: &Sha512Hash) -> Self {
+        hash.0
+    }
+}
+
 impl std::convert::AsRef<[u8]> for Sha512Hash {
     fn as_ref(&self) -> &[u8] {
         &self.0
@@ -35,9 +42,9 @@ impl std::convert::AsRef<[u8]> for Sha512Hash {
 #[derive(Debug, Clone, Copy)]
 pub struct Ed25519PubKey([u8; ed25519_dalek::PUBLIC_KEY_LENGTH]);
 
-impl From<Ed25519PubKey> for Vec<u8> {
-    fn from(pub_key: Ed25519PubKey) -> Self {
-        pub_key.0.to_vec()
+impl From<&Ed25519PubKey> for [u8; ed25519_dalek::PUBLIC_KEY_LENGTH] {
+    fn from(pub_key: &Ed25519PubKey) -> Self {
+        pub_key.0
     }
 }
 
@@ -111,3 +118,51 @@ impl std::convert::TryFrom<&Ed25519Keypair> for ed25519_dalek::Keypair {
 }
 
 pub struct Ed25519Signature([u8; ed25519_dalek::SIGNATURE_LENGTH]);
+
+impl From<[u8; ed25519_dalek::SIGNATURE_LENGTH]> for Ed25519Signature {
+    // if we have the literal byte array we accept it
+    fn from(literal_bytes: [u8; ed25519_dalek::SIGNATURE_LENGTH]) -> Self {
+        Self(literal_bytes)
+    }
+}
+
+
+impl From<&ed25519_dalek::Signature> for Ed25519Signature {
+    fn from(signature: &ed25519_dalek::Signature) -> Self {
+        Self(signature.to_bytes())
+    }
+}
+
+impl From<&Ed25519Signature> for [u8; ed25519_dalek::SIGNATURE_LENGTH] {
+    fn from(signature: &Ed25519Signature) -> Self {
+        signature.0
+    }
+}
+
+pub struct Ed25519SignatureInput {
+    pub keypair: Ed25519Keypair,
+    pub to_sign: Vec<u8>,
+}
+
+impl TryFrom<&Ed25519SignatureInput> for Ed25519Signature {
+    type Error = error::ProvenanceError;
+    fn try_from(signature_input: &Ed25519SignatureInput) -> Result<Self, Self::Error> {
+        let lib_keypair: ed25519_dalek::Keypair = (&signature_input.keypair).try_into()?;
+        Ok((&lib_keypair.sign(&signature_input.to_sign)).into())
+    }
+}
+
+impl std::convert::AsRef<[u8]> for Ed25519Signature {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
+    }
+}
+
+impl ser::Serialize for Ed25519Signature {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+    S: ser::Serializer,
+    {
+        serializer.serialize_str(&base64::encode(&self))
+    }
+}

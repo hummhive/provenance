@@ -15,6 +15,12 @@ pub enum ProvenanceError {
     #[error("could not create jwt: {0}")]
     Jwt(#[from] jwt_compact::CreationError),
 
+    #[error("could not parse jwt: {0}")]
+    JwtParse(#[from] jwt_compact::ParseError),
+
+    #[error("could not decode base64: {0}")]
+    Base64Decode(#[from] base64::DecodeError),
+
     #[error("could not sign")]
     Signature
 }
