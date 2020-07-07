@@ -15,7 +15,7 @@ pub struct SignatureInput {
     pub jwt_signature: jwt::token::Signature,
 }
 
-#[derive(serde::Serialize)]
+#[derive(serde::Serialize, Clone)]
 pub struct Signature(crypto::Ed25519Signature);
 
 impl TryFrom<&SignatureInput> for Signature {
@@ -31,5 +31,11 @@ impl TryFrom<&SignatureInput> for Signature {
             keypair: (&signature_input.device_keypair).into(),
             to_sign,
         }).try_into()?))
+    }
+}
+
+impl AsRef<[u8]> for Signature {
+    fn as_ref(&self) -> &[u8] {
+        self.0.as_ref()
     }
 }

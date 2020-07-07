@@ -129,13 +129,16 @@ mod test {
         //     time_keys_hash: (&ecosystem).into(),
         // };
         //
+
+        let roughtime: roughtime::Roughtime = roughtime::RoughtimeInput {
+            ecosystem: ecosystem.clone(),
+            device_signature: device_signature.clone(),
+        }.try_into().unwrap();
+
         let provenance = Provenance {
             version,
             content_hash: (&content).into(),
-            roughtime: roughtime::Roughtime {
-                public_keys: (&ecosystem).into(),
-                chain: roughtime::chain::Chain,
-            },
+            roughtime,
             jwt: jwt::Jwt {
                 idp_pub_key: (&idp_keypair).into(),
                 token: idp_signed_jwt_portable,

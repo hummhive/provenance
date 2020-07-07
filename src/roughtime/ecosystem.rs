@@ -12,8 +12,8 @@ pub mod env;
 pub mod json;
 use crate::error;
 
-#[derive(serde::Deserialize, Debug)]
-pub(crate) struct Ecosystem {
+#[derive(serde::Deserialize, Debug, Clone)]
+pub struct Ecosystem {
     servers: server::Servers,
 }
 

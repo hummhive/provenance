@@ -117,6 +117,7 @@ impl std::convert::TryFrom<&Ed25519Keypair> for ed25519_dalek::Keypair {
     }
 }
 
+#[derive(Clone, Copy)]
 pub struct Ed25519Signature([u8; ed25519_dalek::SIGNATURE_LENGTH]);
 
 impl From<[u8; ed25519_dalek::SIGNATURE_LENGTH]> for Ed25519Signature {

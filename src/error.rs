@@ -21,8 +21,29 @@ pub enum ProvenanceError {
     #[error("could not decode base64: {0}")]
     Base64Decode(#[from] base64::DecodeError),
 
+    #[error("unspecified ring crypto error: {0}")]
+    RingUnspecified(#[from] ring::error::Unspecified),
+
     #[error("could not sign")]
-    Signature
+    Signature,
+
+    #[error("failed to roughtime after max attempts")]
+    RoughtimeMaxAttempts,
+
+    #[error("failed to create socket address for server: {0}")]
+    NoSocketAddrs(String),
+
+    #[error("a roughtime server is missing an address")]
+    ServerMissingAddress,
+
+    #[error("roughenough error: {0}")]
+    Roughenough(String),
+}
+
+impl From<roughenough::Error> for ProvenanceError {
+    fn from(error: roughenough::Error) -> Self {
+        Self::Roughenough(format!("{:?}", error))
+    }
 }
 
 impl From<ed25519_dalek::SignatureError> for ProvenanceError {

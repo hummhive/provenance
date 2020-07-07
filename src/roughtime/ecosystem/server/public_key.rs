@@ -4,7 +4,7 @@ use crate::error;
 use std::convert::TryFrom;
 
 /// the only key type currently used in ecosystem.json is ed25519
-#[derive(serde::Deserialize, Debug)]
+#[derive(serde::Deserialize, Debug, Clone)]
 pub(crate) enum KeyType {
     #[serde(alias="ed25519")]
     Ed25519

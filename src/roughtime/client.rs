@@ -1,13 +1,14 @@
 // everything here adapted from roughtime client upstrea
 // @see https://github.com/int08h/roughenough/blob/master/src/bin/roughenough-client.rs
 
-use crate::core::ribosome::roughtime::RoughTimeError;
+use crate::error;
 use byteorder::{LittleEndian, ReadBytesExt};
 use roughenough::merkle::root_from_paths;
 use roughenough::sign::Verifier;
 use roughenough::{RtMessage, Tag, CERTIFICATE_CONTEXT, SIGNED_RESPONSE_CONTEXT};
 use std::collections::HashMap;
 use std::net::UdpSocket;
+use crate::roughtime::chain;
 
 #[derive(PartialEq)]
 pub enum Validation {
@@ -19,15 +20,51 @@ pub enum Validation {
     MerkleMissingNonce,
 }
 
-pub fn make_request(nonce: &[u8]) -> Result<Vec<u8>, RoughTimeError> {
-    let mut msg = RtMessage::new(1);
-    msg.add_field(Tag::NONC, nonce)?;
-    msg.pad_to_kilobyte();
+pub struct EncodedRtMessage(Vec<u8>);
 
-    Ok(msg.encode()?)
+impl AsRef<[u8]> for EncodedRtMessage {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
+    }
 }
 
-pub fn receive_response(sock: &mut UdpSocket) -> Result<RtMessage, RoughTimeError> {
+impl serde::Serialize for EncodedRtMessage {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+    S: serde::Serializer,
+    {
+        serializer.serialize_str(&base64::encode(&self))
+    }
+}
+
+impl std::convert::TryFrom<&RtMessage> for EncodedRtMessage {
+    type Error = error::ProvenanceError;
+    fn try_from(rt_message: &RtMessage) -> Result<Self, Self::Error> {
+        Ok(Self(rt_message.encode()?))
+    }
+}
+
+pub struct Request(Vec<u8>);
+
+impl AsRef<[u8]> for Request {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
+    }
+}
+
+impl std::convert::TryFrom<&chain::ChainItemInput> for Request {
+    type Error = error::ProvenanceError;
+    fn try_from(input: &chain::ChainItemInput) -> Result<Self, Self::Error> {
+        let nonce: chain::Nonce = input.into();
+        let mut msg = RtMessage::new(1);
+        msg.add_field(Tag::NONC, nonce.as_ref())?;
+        msg.pad_to_kilobyte();
+
+        Ok(Request(msg.encode()?))
+    }
+}
+
+pub fn receive_response(sock: &mut UdpSocket) -> Result<RtMessage, error::ProvenanceError> {
     let mut buf = [0; 744];
     let resp_len = sock.recv_from(&mut buf)?.0;
 
@@ -48,7 +85,7 @@ impl ResponseHandler {
         pub_key: Vec<u8>,
         response: RtMessage,
         nonce: [u8; 64],
-    ) -> Result<ResponseHandler, RoughTimeError> {
+    ) -> Result<ResponseHandler, error::ProvenanceError> {
         let msg = response.into_hash_map();
         let srep = RtMessage::from_bytes(&msg[&Tag::SREP])?.into_hash_map();
         let cert = RtMessage::from_bytes(&msg[&Tag::CERT])?.into_hash_map();
@@ -84,11 +121,11 @@ impl ResponseHandler {
         self.validate_sig(&self.dele[&Tag::PUBK], &self.msg[&Tag::SIG], &full_srep)
     }
 
-    fn parse_srep(&self) -> Result<HashMap<Tag, Vec<u8>>, RoughTimeError> {
+    fn parse_srep(&self) -> Result<HashMap<Tag, Vec<u8>>, error::ProvenanceError> {
         Ok(RtMessage::from_bytes(&self.msg[&Tag::SREP])?.into_hash_map())
     }
 
-    fn parse_index(&self) -> Result<u32, RoughTimeError> {
+    fn parse_index(&self) -> Result<u32, error::ProvenanceError> {
         Ok(self.msg[&Tag::INDX].as_slice().read_u32::<LittleEndian>()?)
     }
 
@@ -145,25 +182,25 @@ impl ResponseHandler {
         Validation::Valid
     }
 
-    pub fn parse_midpoint(&self) -> Result<u64, RoughTimeError> {
+    pub fn parse_midpoint(&self) -> Result<u64, error::ProvenanceError> {
         Ok(self.srep[&Tag::MIDP]
             .as_slice()
             .read_u64::<LittleEndian>()?)
     }
 
-    pub fn parse_radius(&self) -> Result<u32, RoughTimeError> {
+    pub fn parse_radius(&self) -> Result<u32, error::ProvenanceError> {
         Ok(self.srep[&Tag::RADI]
             .as_slice()
             .read_u32::<LittleEndian>()?)
     }
 
-    pub fn parse_mint(&self) -> Result<u64, RoughTimeError> {
+    pub fn parse_mint(&self) -> Result<u64, error::ProvenanceError> {
         Ok(self.dele[&Tag::MINT]
             .as_slice()
             .read_u64::<LittleEndian>()?)
     }
 
-    pub fn parse_maxt(&self) -> Result<u64, RoughTimeError> {
+    pub fn parse_maxt(&self) -> Result<u64, error::ProvenanceError> {
         Ok(self.dele[&Tag::MAXT]
             .as_slice()
             .read_u64::<LittleEndian>()?)
