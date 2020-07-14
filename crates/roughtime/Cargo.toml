@@ -1,0 +1,31 @@
+[package]
+name = "humm_provenance_roughtime"
+version = "0.0.1"
+description = "low level types and traits for humm provenance crypto"
+license = "MIT"
+homepage = "https://humm.earth"
+documentation = "https://github.com/hummhive/provenance"
+authors = [ "David Meister <thedavidmeister@gmail.com>" ]
+edition = "2018"
+
+[dependencies]
+thiserror = "1.0.18"
+ed25519-dalek = "1.0.0-pre.3"
+serde = { version = "=1.0.104", features = [ "derive" ] }
+humm_provenance_crypto = { path = "../crypto" }
+base64 = "0.12.1"
+rand = "0.7"
+serde_json = "1.0.53"
+# sha2 = "0.8.1"
+# chrono = "0.4"
+# byteorder = "1"
+
+# [dependencies.ring]
+# version = "0.13"
+# default-features = false
+# features = [ ]
+
+[dependencies.jwt-compact]
+version = "0.2.0"
+default-features = false
+features = [ "ed25519-dalek" ]

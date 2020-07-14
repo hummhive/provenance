@@ -27,6 +27,7 @@ crate-type = [ "cdylib", "rlib" ]
 # serde = "=1.0.104"
 # ed25519-dalek = "1.0.0-pre.3"
 humm_provenance_crypto = { path = "../../crates/crypto" }
+humm_provenance_jwt = { path = "../../crates/jwt" }
 # test_wasm_common = { version = "=0.0.1", path = "../../wasm_common" }
 
 # [dependencies.jwt-compact]

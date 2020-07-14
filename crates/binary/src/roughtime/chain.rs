@@ -36,51 +36,9 @@ impl AsRef<[u8]> for Blind {
     }
 }
 
-// the input data for a chain item
-// arbitrary bytes of binary data
-#[derive(Clone)]
-pub struct Data(Vec<u8>);
-
-impl serde::Serialize for Data {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str(&base64::encode(&self))
-    }
-}
-
 impl From<&ChainItemInput> for Data {
     fn from(input: &ChainItemInput) -> Self {
         input.data.clone()
-    }
-}
-
-impl AsRef<[u8]> for Data {
-    fn as_ref(&self) -> &[u8] {
-        &self.0
-    }
-}
-
-pub struct DataHash(crypto::Sha512Hash);
-
-impl From<&Data> for DataHash {
-    fn from(data: &Data) -> Self {
-        Self((&data.as_ref().to_vec()).into())
-    }
-}
-
-impl AsRef<[u8]> for DataHash {
-    fn as_ref(&self) -> &[u8] {
-        self.0.as_ref()
-    }
-}
-
-pub struct Nonce(crypto::Sha512Hash);
-
-impl AsRef<[u8]> for Nonce {
-    fn as_ref(&self) -> &[u8] {
-        self.0.as_ref()
     }
 }
 
@@ -91,35 +49,6 @@ impl From<&ChainItemInput> for Nonce {
         bytes.extend(data_hash.as_ref());
         bytes.extend(input.blind.as_ref());
         Self((&bytes).into())
-    }
-}
-
-#[derive(serde::Serialize)]
-pub struct ChainItem {
-    blind: Blind,
-    data: Data,
-    pub_key: server::public_key::Key,
-    pub response: client::EncodedRtMessage,
-}
-
-impl From<&ChainItem> for Data {
-    fn from(chain_item: &ChainItem) -> Self {
-        chain_item.data.clone()
-    }
-}
-
-impl From<&client::EncodedRtMessage> for Data {
-    fn from(encoded_message: &client::EncodedRtMessage) -> Self {
-        Self(encoded_message.as_ref().to_vec())
-    }
-}
-
-#[derive(serde::Serialize)]
-pub struct Chain(Vec<ChainItem>);
-
-impl From<Vec<ChainItem>> for Chain {
-    fn from(v: Vec<ChainItem>) -> Self {
-        Self(v)
     }
 }
 
@@ -138,12 +67,6 @@ impl From<&ChainItemInput> for ecosystem::server::public_key::Key {
 impl From<&ChainItemInput> for Blind {
     fn from(input: &ChainItemInput) -> Self {
         input.blind
-    }
-}
-
-impl From<Vec<u8>> for Data {
-    fn from(v: Vec<u8>) -> Self {
-        Self(v)
     }
 }
 

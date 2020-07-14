@@ -1,8 +1,7 @@
-use crate::crypto;
+use humm_provenance_crypto as crypto;
 use crate::error;
-use crate::jwt;
 use ed25519_dalek;
-use std::convert::TryInto;
+use humm_provenance_crypto::ed25519::public::Ed25519PubKey;
 
 #[derive(serde::Serialize)]
 #[serde(transparent)]
@@ -33,8 +32,8 @@ impl std::convert::TryFrom<&Keypair> for PubKey {
     }
 }
 
-impl From<&jwt::JwtInput> for Keypair {
-    fn from(input: &jwt::JwtInput) -> Self {
+impl From<&crate::JwtInput> for Keypair {
+    fn from(input: &crate::JwtInput) -> Self {
         input.idp_keypair
     }
 }
