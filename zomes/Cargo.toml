@@ -1,0 +1,32 @@
+[package]
+name = "humm_zomes"
+version = "0.0.1"
+authors = [ "thedavidmeister", "thedavidmeister@gmail.com" ]
+edition = "2018"
+
+# [profile.dev]
+# opt-level = "z"
+#
+# [profile.release]
+# opt-level = "z"
+
+[lib]
+name = "humm_zomes"
+crate-type = [ "cdylib", "rlib" ]
+
+[dependencies]
+# holochain_serialized_bytes = "=0.0.40"
+# holochain_wasmer_guest = "=0.0.35"
+# holochain_zome_types = { version = "=0.0.1", path = "../../../zome_types" }
+
+# serde = "=1.0.104"
+# ed25519-dalek = "1.0.0-pre.3"
+# humm_provenance_crypto = { path = "../../crates/crypto" }
+# test_wasm_common = { version = "=0.0.1", path = "../../wasm_common" }
+
+# [dependencies.jwt-compact]
+# version = "0.2.0"
+# default-features = false
+# features = [ "ed25519-dalek" ]
+
+[patch.crates-io]
