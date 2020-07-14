@@ -4,6 +4,17 @@ use std::convert::TryInto;
 #[derive(Debug, Clone, Copy)]
 pub struct Ed25519PubKey([u8; ed25519_dalek::PUBLIC_KEY_LENGTH]);
 
+#[cfg(test)]
+#[test]
+fn smoke_ed25519pub_key() {
+    assert_eq!(
+        20,
+        ed25519_dalek::PUBLIC_KEY_LENGTH,
+    );
+
+    Ed25519PubKey([0; ed25519_dalek::PUBLIC_KEY_LENGTH]);
+}
+
 impl From<&Ed25519PubKey> for [u8; ed25519_dalek::PUBLIC_KEY_LENGTH] {
     fn from(pub_key: &Ed25519PubKey) -> Self {
         pub_key.0
