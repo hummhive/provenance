@@ -1,16 +1,13 @@
 use serde::de::Error;
 use std::convert::TryInto;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Ed25519PubKey([u8; ed25519_dalek::PUBLIC_KEY_LENGTH]);
 
 #[cfg(test)]
 #[test]
-fn smoke_ed25519pub_key() {
-    assert_eq!(
-        20,
-        ed25519_dalek::PUBLIC_KEY_LENGTH,
-    );
+fn ed25519pub_key_smoke() {
+    assert_eq!(32, ed25519_dalek::PUBLIC_KEY_LENGTH,);
 
     Ed25519PubKey([0; ed25519_dalek::PUBLIC_KEY_LENGTH]);
 }
@@ -21,10 +18,47 @@ impl From<&Ed25519PubKey> for [u8; ed25519_dalek::PUBLIC_KEY_LENGTH] {
     }
 }
 
+#[cfg(test)]
+#[test]
+fn ed25519pub_key_to_array() {
+    let inner = [0; ed25519_dalek::PUBLIC_KEY_LENGTH];
+    let pubkey = Ed25519PubKey(inner);
+
+    assert_eq!(
+        inner,
+        <[u8; ed25519_dalek::PUBLIC_KEY_LENGTH]>::from(&pubkey),
+    );
+}
+
+impl std::convert::AsRef<[u8]> for Ed25519PubKey {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
+    }
+}
+
+#[cfg(test)]
+#[test]
+fn ed25519pub_key_as_ref() {
+    let inner = [0; ed25519_dalek::PUBLIC_KEY_LENGTH];
+    let pubkey = Ed25519PubKey(inner);
+
+    assert_eq!(&inner, pubkey.as_ref(),);
+}
+
 impl From<&ed25519_dalek::Keypair> for Ed25519PubKey {
     fn from(keypair: &ed25519_dalek::Keypair) -> Self {
         Self(keypair.public.to_bytes())
     }
+}
+
+#[cfg(test)]
+#[test]
+fn ed25519pub_key_from_dalek_keypair() {
+    let mut csprng = rand::rngs::OsRng {};
+    let keypair = ed25519_dalek::Keypair::generate(&mut csprng);
+    let pubkey = Ed25519PubKey::from(&keypair);
+
+    assert_eq!(keypair.public.to_bytes(), pubkey.as_ref(),);
 }
 
 impl From<[u8; ed25519_dalek::PUBLIC_KEY_LENGTH]> for Ed25519PubKey {
@@ -33,10 +67,13 @@ impl From<[u8; ed25519_dalek::PUBLIC_KEY_LENGTH]> for Ed25519PubKey {
     }
 }
 
-impl std::convert::AsRef<[u8]> for Ed25519PubKey {
-    fn as_ref(&self) -> &[u8] {
-        &self.0
-    }
+#[cfg(test)]
+#[test]
+fn ed25519pub_key_from_byte_array() {
+    let array = [0; ed25519_dalek::PUBLIC_KEY_LENGTH];
+    let pubkey = Ed25519PubKey::from(array);
+
+    assert_eq!(&array, pubkey.as_ref(),);
 }
 
 impl<'de> serde::de::Deserialize<'de> for Ed25519PubKey {
@@ -67,6 +104,16 @@ impl serde::ser::Serialize for Ed25519PubKey {
     {
         serializer.serialize_str(&base64::encode(&self))
     }
+}
+
+#[cfg(test)]
+#[test]
+fn ed25519pub_key_serde() {
+    let pubkey = Ed25519PubKey::from([0; ed25519_dalek::PUBLIC_KEY_LENGTH]);
+    let s = serde_json::to_string(&pubkey).unwrap();
+    assert_eq!("\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\"", s);
+
+    assert_eq!(pubkey, serde_json::from_str(&s).unwrap(),);
 }
 
 pub struct Ed25519SecretKey([u8; ed25519_dalek::SECRET_KEY_LENGTH]);
