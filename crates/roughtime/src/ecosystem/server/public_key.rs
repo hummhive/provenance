@@ -1,6 +1,6 @@
-use crate::crypto;
+use humm_provenance_crypto as crypto;
 use crate::error;
-use crate::roughtime::ecosystem;
+use crate::ecosystem;
 use std::convert::TryFrom;
 
 /// the only key type currently used in ecosystem.json is ed25519
@@ -13,7 +13,7 @@ pub(crate) enum KeyType {
 /// public keys in an ecosystem.json are 32 bytes as base64
 #[derive(Debug, Clone, Copy, serde::Serialize, serde::Deserialize)]
 #[serde(transparent)]
-pub(crate) struct Key(crypto::Ed25519PubKey);
+pub(crate) struct Key(crypto::ed25519::public::Ed25519PubKey);
 
 impl From<&Key> for [u8; ed25519_dalek::PUBLIC_KEY_LENGTH] {
     fn from(key: &Key) -> Self {
@@ -42,14 +42,14 @@ impl From<&ecosystem::Ecosystem> for Keys {
 pub struct KeysPortable(String);
 
 impl TryFrom<&ecosystem::Ecosystem> for KeysPortable {
-    type Error = error::ProvenanceError;
+    type Error = error::RoughtimeError;
     fn try_from(ecosystem: &ecosystem::Ecosystem) -> Result<Self, Self::Error> {
         Ok(Self(serde_json::to_string(&Keys::from(ecosystem))?))
     }
 }
 
 impl TryFrom<&KeysPortable> for Keys {
-    type Error = error::ProvenanceError;
+    type Error = error::RoughtimeError;
     fn try_from(keys_portable: &KeysPortable) -> Result<Self, Self::Error> {
         Ok(Self(serde_json::from_str(&keys_portable.0)?))
     }
@@ -57,7 +57,7 @@ impl TryFrom<&KeysPortable> for Keys {
 
 #[derive(serde::Serialize, Clone, Copy)]
 #[serde(transparent)]
-pub struct KeysHash(crypto::Sha512Hash);
+pub struct KeysHash(crypto::sha512::Sha512Hash);
 
 impl From<&Keys> for KeysHash {
     fn from(keys: &Keys) -> Self {

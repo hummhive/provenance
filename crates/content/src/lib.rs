@@ -1,4 +1,5 @@
-use crate::crypto::Sha512Hash;
+use humm_provenance_crypto::sha512::Sha512Hash;
+use humm_provenance_crypto::sha512::SHA512_OUTPUT_LEN;
 
 pub struct Content(Vec<u8>);
 

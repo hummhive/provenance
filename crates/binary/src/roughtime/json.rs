@@ -31,6 +31,13 @@ impl std::convert::TryFrom<super::env::EcosystemJsonFilePath> for Ecosystem {
     }
 }
 
+impl std::convert::TryFrom<json::Ecosystem> for humm_provenance_roughtime::ecosystem::Ecosystem {
+    type Error = error::RoughtimeError;
+    fn try_from(ecosystem: json::Ecosystem) -> Result<Self, Self::Error> {
+        Ok(serde_json::from_str(&String::from(ecosystem))?)
+    }
+}
+
 #[cfg(test)]
 mod test {
     use crate::roughtime::ecosystem::env::EcosystemJsonFilePath;

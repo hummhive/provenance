@@ -20,23 +20,6 @@ pub enum Validation {
     MerkleMissingNonce,
 }
 
-pub struct EncodedRtMessage(Vec<u8>);
-
-impl AsRef<[u8]> for EncodedRtMessage {
-    fn as_ref(&self) -> &[u8] {
-        &self.0
-    }
-}
-
-impl serde::Serialize for EncodedRtMessage {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str(&base64::encode(&self))
-    }
-}
-
 impl std::convert::TryFrom<&RtMessage> for EncodedRtMessage {
     type Error = error::ProvenanceError;
     fn try_from(rt_message: &RtMessage) -> Result<Self, Self::Error> {

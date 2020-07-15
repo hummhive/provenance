@@ -7,35 +7,6 @@ use ring::rand::SecureRandom;
 use std::convert::TryInto;
 use std::net::ToSocketAddrs;
 
-// the blind to make the hash unpredictable for the server
-const BLIND_LEN: usize = ring::digest::SHA512_OUTPUT_LEN;
-#[derive(Clone, Copy)]
-pub struct Blind([u8; BLIND_LEN]);
-
-impl serde::Serialize for Blind {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        serializer.serialize_str(&base64::encode(&self))
-    }
-}
-
-impl Default for Blind {
-    fn default() -> Self {
-        let rng = ring::rand::SystemRandom::new();
-        let mut bytes = [0_u8; BLIND_LEN];
-        rng.fill(&mut bytes).unwrap();
-        Self(bytes)
-    }
-}
-
-impl AsRef<[u8]> for Blind {
-    fn as_ref(&self) -> &[u8] {
-        &self.0
-    }
-}
-
 impl From<&ChainItemInput> for Data {
     fn from(input: &ChainItemInput) -> Self {
         input.data.clone()

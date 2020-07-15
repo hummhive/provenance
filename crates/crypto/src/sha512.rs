@@ -29,6 +29,15 @@ fn sha512_from_byte_array() {
     assert_eq!(&array.to_vec(), &sha512.as_ref().to_vec(),);
 }
 
+impl From<&Vec<u8>> for Sha512Hash {
+    fn from(vec: &Vec<u8>) -> Self {
+        let mut array = [0; SHA512_OUTPUT_LEN];
+        array.clone_from_slice(vec);
+
+        Self::from(array)
+    }
+}
+
 impl serde::ser::Serialize for Sha512Hash {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where

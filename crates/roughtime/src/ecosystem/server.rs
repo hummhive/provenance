@@ -19,14 +19,14 @@ pub struct Server {
 }
 
 impl std::convert::TryFrom<&Server> for address::Url {
-    type Error = error::ProvenanceError;
+    type Error = error::RoughtimeError;
     fn try_from(server: &Server) -> Result<Self, Self::Error> {
         Ok(server
             .addresses
             .as_ref()
             .into_iter()
             .next()
-            .ok_or(error::ProvenanceError::ServerMissingAddress)?
+            .ok_or(error::RoughtimeError::ServerMissingAddress)?
             .address
             .clone())
     }

@@ -7,10 +7,8 @@
 //! server list.
 //! https://github.com/cloudflare/roughtime/blob/master/ecosystem.json
 
-pub mod env;
-pub mod json;
 pub mod server;
-use crate::error;
+// use crate::error;
 
 #[derive(serde::Deserialize, Debug, Clone)]
 pub struct Ecosystem {
@@ -20,22 +18,6 @@ pub struct Ecosystem {
 impl AsRef<server::Servers> for Ecosystem {
     fn as_ref(&self) -> &server::Servers {
         &self.servers
-    }
-}
-
-impl std::convert::TryFrom<env::EcosystemJsonFilePath> for Ecosystem {
-    type Error = error::ProvenanceError;
-    fn try_from(ecosystem_json_file_path: env::EcosystemJsonFilePath) -> Result<Self, Self::Error> {
-        Ok(Ecosystem::try_from(json::Ecosystem::try_from(
-            ecosystem_json_file_path,
-        )?)?)
-    }
-}
-
-impl std::convert::TryFrom<json::Ecosystem> for Ecosystem {
-    type Error = error::ProvenanceError;
-    fn try_from(ecosystem: json::Ecosystem) -> Result<Self, Self::Error> {
-        Ok(serde_json::from_str(&String::from(ecosystem))?)
     }
 }
 

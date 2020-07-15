@@ -1,5 +1,5 @@
 [package]
-name = "humm_provenance_jwt"
+name = "humm_provenance_device"
 version = "0.0.1"
 description = "low level types and traits for humm provenance crypto"
 license = "MIT"
@@ -12,12 +12,13 @@ edition = "2018"
 thiserror = "1.0.18"
 ed25519-dalek = "1.0.0-pre.3"
 serde = { version = "=1.0.104", features = [ "derive" ] }
-humm_provenance_crypto = { path = "../crypto" }
-humm_provenance_roughtime = { path = "../roughtime" }
-humm_provenance_device = { path = "../device" }
 base64 = "0.12.1"
 rand = "0.7"
 serde_json = "1.0.53"
+humm_provenance_crypto = { path = "../crypto" }
+humm_provenance_content = { path = "../content" }
+humm_provenance_version = { path = "../version" }
+# humm_provenance_jwt = { path = "../jwt" }
 # sha2 = "0.8.1"
 # chrono = "0.4"
 # byteorder = "1"
@@ -27,7 +28,7 @@ serde_json = "1.0.53"
 # default-features = false
 # features = [ ]
 
-[dependencies.jwt-compact]
-version = "0.2.0"
-default-features = false
-features = [ "ed25519-dalek" ]
+# [dependencies.jwt-compact]
+# version = "0.2.0"
+# default-features = false
+# features = [ "ed25519-dalek" ]

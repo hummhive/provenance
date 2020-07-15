@@ -1,4 +1,6 @@
-pub struct Nonce(crypto::Sha512Hash);
+use crate::chain::Data;
+
+pub struct Nonce(humm_provenance_crypto::sha512::Sha512Hash);
 
 impl AsRef<[u8]> for Nonce {
     fn as_ref(&self) -> &[u8] {
@@ -6,9 +8,9 @@ impl AsRef<[u8]> for Nonce {
     }
 }
 
-pub struct DataHash(crypto::Sha512Hash);
+pub struct DataHash(humm_provenance_crypto::sha512::Sha512Hash);
 
-impl From<&Data> for DataHash {
+impl From<&crate::chain::Data> for DataHash {
     fn from(data: &Data) -> Self {
         Self((&data.as_ref().to_vec()).into())
     }

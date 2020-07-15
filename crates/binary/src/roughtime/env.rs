@@ -21,3 +21,12 @@ impl std::convert::TryFrom<EcosystemJsonFilePath> for env::Val {
 }
 
 impl env::Var for EcosystemJsonFilePath {}
+
+impl std::convert::TryFrom<EcosystemJsonFilePath> for Ecosystem {
+    type Error = error::RoughtimeError;
+    fn try_from(ecosystem_json_file_path: env::EcosystemJsonFilePath) -> Result<Self, Self::Error> {
+        Ok(Ecosystem::try_from(json::Ecosystem::try_from(
+            ecosystem_json_file_path,
+        )?)?)
+    }
+}
