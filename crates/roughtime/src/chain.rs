@@ -12,14 +12,16 @@ impl serde::Serialize for Blind {
     }
 }
 
-// impl Default for Blind {
-//     fn default() -> Self {
-//         let rng = ring::rand::SystemRandom::new();
-//         let mut bytes = [0_u8; BLIND_LEN];
-//         rng.fill(&mut bytes).unwrap();
-//         Self(bytes)
-//     }
-// }
+#[cfg(feature = "rng")]
+impl Default for Blind {
+    fn default() -> Self {
+        use ring::rand::SecureRandom;
+        let rng = ring::rand::SystemRandom::new();
+        let mut bytes = [0_u8; BLIND_LEN];
+        rng.fill(&mut bytes).unwrap();
+        Self(bytes)
+    }
+}
 
 impl AsRef<[u8]> for Blind {
     fn as_ref(&self) -> &[u8] {
@@ -28,6 +30,14 @@ impl AsRef<[u8]> for Blind {
 }
 
 pub struct EncodedRtMessage(Vec<u8>);
+
+#[cfg(feature = "client")]
+impl std::convert::TryFrom<&roughenough::RtMessage> for EncodedRtMessage {
+    type Error = crate::error::RoughtimeError;
+    fn try_from(rt_message: &roughenough::RtMessage) -> Result<Self, Self::Error> {
+        Ok(Self(rt_message.encode()?))
+    }
+}
 
 impl AsRef<[u8]> for EncodedRtMessage {
     fn as_ref(&self) -> &[u8] {
@@ -46,9 +56,9 @@ impl serde::Serialize for EncodedRtMessage {
 
 #[derive(serde::Serialize)]
 pub struct ChainItem {
-    blind: Blind,
-    data: Data,
-    pub_key: crate::ecosystem::server::public_key::Key,
+    pub blind: Blind,
+    pub data: Data,
+    pub pub_key: crate::ecosystem::server::public_key::Key,
     pub response: EncodedRtMessage,
 }
 

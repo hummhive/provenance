@@ -3,6 +3,6 @@
 members = [
  # "crates/binary",
  "crates/crypto",
- # "crates/core",
+ "crates/input",
  "zomes"
 ]

@@ -1,4 +1,4 @@
-use super::error;
+pub mod error;
 
 /// the key of the environment variable
 /// used to lookup val from the environment
@@ -44,4 +44,4 @@ impl From<Val> for String {
     }
 }
 
-pub trait Var: Into<Key> + std::convert::TryInto<Val, Error = error::ProvenanceError> {}
+pub trait Var: Into<Key> + std::convert::TryInto<Val, Error = error::EnvError> {}

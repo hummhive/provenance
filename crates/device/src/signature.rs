@@ -8,3 +8,9 @@ impl AsRef<[u8]> for Signature {
         self.0.as_ref()
     }
 }
+
+impl From<crypto::ed25519::signature::Ed25519Signature> for Signature {
+    fn from(ed25519_sig: crypto::ed25519::signature::Ed25519Signature) -> Self {
+        Self(ed25519_sig)
+    }
+}

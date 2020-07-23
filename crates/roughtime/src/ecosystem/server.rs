@@ -40,7 +40,7 @@ impl AsRef<public_key::Key> for Server {
 
 /// list of all servers from an ecosystem.json
 #[derive(serde::Deserialize, Debug, Clone)]
-pub(crate) struct Servers(Vec<Server>);
+pub struct Servers(Vec<Server>);
 
 impl AsRef<Vec<Server>> for Servers {
     fn as_ref(&self) -> &Vec<Server> {

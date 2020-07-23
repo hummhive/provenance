@@ -30,3 +30,16 @@ impl std::convert::TryFrom<EcosystemJsonFilePath> for Ecosystem {
         )?)?)
     }
 }
+
+#[cfg(test)]
+mod test {
+
+    use std::convert::TryFrom;
+
+    #[test]
+    fn server_load() {
+        let ecosystem = super::Ecosystem::try_from(super::env::EcosystemJsonFilePath);
+
+        println!("{:?}", ecosystem);
+    }
+}

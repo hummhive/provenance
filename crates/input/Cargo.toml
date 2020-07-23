@@ -1,7 +1,7 @@
 [package]
-name = "humm_provenance_core"
+name = "humm_provenance_input"
 version = "0.0.1"
-description = "low level types and traits for humm provenance"
+description = "create a humm provenance from input data"
 license = "MIT"
 homepage = "https://humm.earth"
 documentation = "https://github.com/hummhive/provenance"
@@ -18,11 +18,22 @@ rand = "0.7"
 sha2 = "0.8.1"
 chrono = "0.4"
 byteorder = "1"
+humm_provenance_device = { path = "../device" }
+humm_provenance_version = { path = "../version" }
+humm_provenance_content = { path = "../content" }
+humm_provenance_jwt = { path = "../jwt" }
+humm_provenance_crypto = { path = "../crypto" }
+# ring = "0.13"
+roughenough = "1.1.8"
 
 # [dependencies.ring]
 # version = "0.13"
 # default-features = false
 # features = [ ]
+
+[dependencies.humm_provenance_roughtime]
+path = "../roughtime"
+features = [ "rng", "client" ]
 
 [dependencies.jwt-compact]
 version = "0.2.0"

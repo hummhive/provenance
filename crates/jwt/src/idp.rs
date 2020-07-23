@@ -1,6 +1,6 @@
-use humm_provenance_crypto as crypto;
 use crate::error;
 use ed25519_dalek;
+use humm_provenance_crypto as crypto;
 use std::convert::TryInto;
 
 #[derive(serde::Serialize)]

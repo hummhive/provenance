@@ -1,4 +1,4 @@
-use super::error;
+pub mod error;
 
 #[derive(Debug)]
 pub struct Json(String);

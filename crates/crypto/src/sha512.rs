@@ -1,4 +1,5 @@
 use serde::de::Error;
+use sha2::Digest;
 
 /// matches ring::digest::SHA512_OUTPUT_LEN
 pub const SHA512_OUTPUT_LEN: usize = 512 / std::mem::size_of::<u64>();
@@ -30,11 +31,10 @@ fn sha512_from_byte_array() {
 }
 
 impl From<&Vec<u8>> for Sha512Hash {
-    fn from(vec: &Vec<u8>) -> Self {
-        let mut array = [0; SHA512_OUTPUT_LEN];
-        array.clone_from_slice(vec);
-
-        Self::from(array)
+    fn from(bytes: &Vec<u8>) -> Self {
+        let mut hash = [0; SHA512_OUTPUT_LEN];
+        hash.copy_from_slice(sha2::Sha512::digest(bytes).as_slice());
+        Self(hash)
     }
 }
 

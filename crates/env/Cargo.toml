@@ -1,7 +1,7 @@
 [package]
-name = "humm_provenance_binary"
+name = "humm_provenance_env"
 version = "0.0.1"
-description = "binary for humm provenance"
+description = "handle environment variables for humm provenance"
 license = "MIT"
 homepage = "https://humm.earth"
 documentation = "https://github.com/hummhive/provenance"
@@ -9,7 +9,4 @@ authors = [ "David Meister <thedavidmeister@gmail.com>" ]
 edition = "2018"
 
 [dependencies]
-humm_provenance_core = { path = "../core" }
-rand = "0.7"
-ed25519-dalek = "1.0.0-pre.3"
-serde_json = "1.0.53"
+thiserror = "1.0.18"

@@ -8,7 +8,7 @@ impl std::convert::TryFrom<&crate::token::Token> for Signature {
         // need to get at signature directly due to missing upstream API
         // https://github.com/slowli/jwt-compact/issues/5
         // https://docs.rs/jwt-compact/0.2.0/src/jwt_compact/lib.rs.html#494
-        let token_parts: Vec<_> = token.0.as_str().splitn(4, '.').collect();
+        let token_parts: Vec<_> = token.as_str().splitn(4, '.').collect();
         match &token_parts[..] {
             [_, _, signature] => {
                 let mut decoded_signature = vec![0; 3 * (signature.len() + 3) / 4];
@@ -20,7 +20,11 @@ impl std::convert::TryFrom<&crate::token::Token> for Signature {
                 decoded_signature.truncate(signature_len);
                 let mut signature_bytes = [0; ed25519_dalek::SIGNATURE_LENGTH];
                 signature_bytes.copy_from_slice(&decoded_signature[..]);
-                Ok(Self(humm_provenance_crypto::ed25519::signature::Ed25519Signature::from(signature_bytes)))
+                Ok(Self(
+                    humm_provenance_crypto::ed25519::signature::Ed25519Signature::from(
+                        signature_bytes,
+                    ),
+                ))
             }
             _ => Err(jwt_compact::ParseError::InvalidTokenStructure)?,
         }

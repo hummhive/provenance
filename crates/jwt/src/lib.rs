@@ -1,7 +1,7 @@
 pub mod error;
 pub mod idp;
-pub mod token;
 pub mod signature;
+pub mod token;
 
 #[derive(serde::Serialize)]
 pub struct Jwt {

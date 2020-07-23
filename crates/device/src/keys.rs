@@ -1,5 +1,5 @@
-use humm_provenance_crypto as crypto;
 use crate::error;
+use humm_provenance_crypto as crypto;
 use std::convert::TryFrom;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Copy)]

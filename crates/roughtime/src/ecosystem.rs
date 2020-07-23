@@ -20,16 +20,3 @@ impl AsRef<server::Servers> for Ecosystem {
         &self.servers
     }
 }
-
-#[cfg(test)]
-mod test {
-
-    use std::convert::TryFrom;
-
-    #[test]
-    fn server_load() {
-        let ecosystem = super::Ecosystem::try_from(super::env::EcosystemJsonFilePath);
-
-        println!("{:?}", ecosystem);
-    }
-}

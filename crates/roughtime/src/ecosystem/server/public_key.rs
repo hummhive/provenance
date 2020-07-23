@@ -1,6 +1,6 @@
-use humm_provenance_crypto as crypto;
-use crate::error;
 use crate::ecosystem;
+use crate::error;
+use humm_provenance_crypto as crypto;
 use std::convert::TryFrom;
 
 /// the only key type currently used in ecosystem.json is ed25519
@@ -13,7 +13,7 @@ pub(crate) enum KeyType {
 /// public keys in an ecosystem.json are 32 bytes as base64
 #[derive(Debug, Clone, Copy, serde::Serialize, serde::Deserialize)]
 #[serde(transparent)]
-pub(crate) struct Key(crypto::ed25519::public::Ed25519PubKey);
+pub struct Key(crypto::ed25519::public::Ed25519PubKey);
 
 impl From<&Key> for [u8; ed25519_dalek::PUBLIC_KEY_LENGTH] {
     fn from(key: &Key) -> Self {
