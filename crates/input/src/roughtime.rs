@@ -3,7 +3,6 @@ use humm_provenance_roughtime as roughtime;
 use std::convert::TryInto;
 pub mod chain;
 pub mod client;
-pub mod crypto;
 use rand::seq::SliceRandom;
 
 const DESIRED_CHAIN_LEN: usize = 3;
