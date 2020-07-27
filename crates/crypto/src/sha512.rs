@@ -7,6 +7,12 @@ pub const SHA512_OUTPUT_LEN: usize = 512 / std::mem::size_of::<u64>();
 #[derive(Clone, Copy)]
 pub struct Sha512Hash([u8; SHA512_OUTPUT_LEN]);
 
+impl PartialEq for Sha512Hash {
+    fn eq(&self, other: &Self) -> bool {
+        self.as_ref() == other.as_ref()
+    }
+}
+
 #[cfg(test)]
 #[test]
 fn sha512_smoke() {

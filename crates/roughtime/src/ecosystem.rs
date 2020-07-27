@@ -8,7 +8,10 @@
 //! https://github.com/cloudflare/roughtime/blob/master/ecosystem.json
 
 pub mod server;
-// use crate::error;
+
+use crate::ecosystem::server::public_key;
+use crate::error;
+use std::convert::TryFrom;
 
 #[derive(serde::Deserialize, Debug, Clone)]
 pub struct Ecosystem {
@@ -18,5 +21,32 @@ pub struct Ecosystem {
 impl AsRef<server::Servers> for Ecosystem {
     fn as_ref(&self) -> &server::Servers {
         &self.servers
+    }
+}
+
+impl From<&Ecosystem> for public_key::Keys {
+    fn from(ecosystem: &Ecosystem) -> Self {
+        Self::from(
+            ecosystem
+                .as_ref()
+                .as_ref()
+                .iter()
+                .map(|s| s.as_ref())
+                .cloned()
+                .collect::<Vec<public_key::Key>>(),
+        )
+    }
+}
+
+impl TryFrom<&Ecosystem> for public_key::KeysPortable {
+    type Error = error::RoughtimeError;
+    fn try_from(ecosystem: &Ecosystem) -> Result<Self, Self::Error> {
+        Self::try_from(&public_key::Keys::from(ecosystem))
+    }
+}
+
+impl From<&Ecosystem> for public_key::KeysHash {
+    fn from(ecosystem: &Ecosystem) -> Self {
+        (&public_key::Keys::from(ecosystem)).into()
     }
 }

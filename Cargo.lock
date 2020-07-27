@@ -265,6 +265,15 @@ version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "humm_provenance_binary"
+version = "0.0.1"
+dependencies = [
+ "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "humm_provenance_content"
 version = "0.0.1"
 dependencies = [

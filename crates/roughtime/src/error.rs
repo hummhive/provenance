@@ -2,8 +2,6 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum RoughtimeError {
-    // #[error(transparent)]
-    // Roughenough(roughenough::Error),
     #[error(transparent)]
     Json(#[from] serde_json::error::Error),
 

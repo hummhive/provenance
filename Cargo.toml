@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
- # "crates/binary",
+ "crates/binary",
  "crates/crypto",
  "crates/input",
  "zomes"
