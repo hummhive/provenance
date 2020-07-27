@@ -23,13 +23,7 @@ humm_provenance_version = { path = "../version" }
 humm_provenance_content = { path = "../content" }
 humm_provenance_jwt = { path = "../jwt" }
 humm_provenance_crypto = { path = "../crypto" }
-# ring = "0.13"
 roughenough = "1.1.8"
-
-# [dependencies.ring]
-# version = "0.13"
-# default-features = false
-# features = [ ]
 
 [dependencies.humm_provenance_roughtime]
 path = "../roughtime"

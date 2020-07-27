@@ -18,13 +18,8 @@ ed25519-dalek = "1.0.0-pre.3"
 serde = { version = "=1.0.104", features = [ "derive" ] }
 humm_provenance_crypto = { path = "../crypto" }
 base64 = "0.12.1"
-# rand = { version = "0.7", optional = true }
 serde_json = "1.0.53"
 roughenough = { version = "1.1.8", optional = true }
-
-# sha2 = "0.8.1"
-# chrono = "0.4"
-# byteorder = "1"
 
 [dependencies.ring]
 version = "0.13"
