@@ -1,6 +1,6 @@
 use crate::error;
 use ed25519_dalek;
-use humm_provenance_crypto as crypto;
+use humm_crypto as crypto;
 use std::convert::TryInto;
 
 #[derive(serde::Serialize)]
@@ -26,7 +26,7 @@ impl From<&ed25519_dalek::Keypair> for SecretKey {
 pub struct Keypair(crypto::ed25519::keypair::Ed25519Keypair);
 
 impl std::convert::TryFrom<&Keypair> for PubKey {
-    type Error = error::JwtError;
+    type Error = error::IdpError;
     fn try_from(keypair: &Keypair) -> Result<Self, Self::Error> {
         Ok(Self((&keypair.0).try_into()?))
     }
@@ -39,7 +39,7 @@ impl From<&ed25519_dalek::Keypair> for Keypair {
 }
 
 impl std::convert::TryFrom<&Keypair> for ed25519_dalek::Keypair {
-    type Error = error::JwtError;
+    type Error = error::IdpError;
     fn try_from(keypair: &Keypair) -> Result<Self, Self::Error> {
         Ok(Self::try_from(&keypair.0)?)
     }

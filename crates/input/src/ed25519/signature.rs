@@ -1,5 +1,5 @@
-use humm_provenance_crypto::ed25519::keypair::Ed25519Keypair;
-use humm_provenance_crypto::ed25519::signature::Ed25519Signature;
+use humm_crypto::ed25519::keypair::Ed25519Keypair;
+use humm_crypto::ed25519::signature::Ed25519Signature;
 use std::convert::TryInto;
 
 pub struct Ed25519SignatureInput {
@@ -8,7 +8,7 @@ pub struct Ed25519SignatureInput {
 }
 
 impl std::convert::TryFrom<&Ed25519SignatureInput> for Ed25519Signature {
-    type Error = humm_provenance_crypto::error::CryptoError;
+    type Error = humm_crypto::error::CryptoError;
     fn try_from(signature_input: &Ed25519SignatureInput) -> Result<Self, Self::Error> {
         let lib_keypair: ed25519_dalek::Keypair = (&signature_input.keypair).try_into()?;
         Ok((&lib_keypair.sign(&signature_input.to_sign)).into())

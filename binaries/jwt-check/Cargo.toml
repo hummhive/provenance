@@ -1,0 +1,14 @@
+[package]
+name = "humm_jwt_check"
+version = "0.0.1"
+description = "humm binary for jwt checking"
+license = "MIT"
+homepage = "https://humm.earth"
+documentation = "https://github.com/hummhive/provenance"
+authors = [ "David Meister <thedavidmeister@gmail.com>" ]
+edition = "2018"
+
+[dependencies]
+humm_crypto = { path = "../../crates/crypto" }
+humm_jwt = { path = "../../crates/jwt" }
+clap = "2"

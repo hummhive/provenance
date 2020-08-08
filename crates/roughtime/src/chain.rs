@@ -1,5 +1,5 @@
 // the blind to make the hash unpredictable for the server
-const BLIND_LEN: usize = humm_provenance_crypto::sha512::SHA512_OUTPUT_LEN;
+const BLIND_LEN: usize = humm_crypto::sha512::SHA512_OUTPUT_LEN;
 #[derive(Clone, Copy)]
 pub struct Blind([u8; BLIND_LEN]);
 

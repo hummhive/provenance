@@ -1,6 +1,6 @@
 use crate::error;
 
-pub struct Signature(humm_provenance_crypto::ed25519::signature::Ed25519Signature);
+pub struct Signature(humm_crypto::ed25519::signature::Ed25519Signature);
 
 impl std::convert::TryFrom<&crate::token::Token> for Signature {
     type Error = error::JwtError;
@@ -21,7 +21,7 @@ impl std::convert::TryFrom<&crate::token::Token> for Signature {
                 let mut signature_bytes = [0; ed25519_dalek::SIGNATURE_LENGTH];
                 signature_bytes.copy_from_slice(&decoded_signature[..]);
                 Ok(Self(
-                    humm_provenance_crypto::ed25519::signature::Ed25519Signature::from(
+                    humm_crypto::ed25519::signature::Ed25519Signature::from(
                         signature_bytes,
                     ),
                 ))

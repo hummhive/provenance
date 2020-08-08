@@ -1,6 +1,7 @@
 [workspace]
 
 members = [
+ "binaries/jwt-check",
  "crates/binary",
  "crates/crypto",
  "crates/input",

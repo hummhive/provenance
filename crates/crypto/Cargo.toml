@@ -1,7 +1,7 @@
 [package]
-name = "humm_provenance_crypto"
+name = "humm_crypto"
 version = "0.0.1"
-description = "low level types and traits for humm provenance crypto"
+description = "low level types and traits for humm crypto"
 license = "MIT"
 homepage = "https://humm.earth"
 documentation = "https://github.com/hummhive/provenance"

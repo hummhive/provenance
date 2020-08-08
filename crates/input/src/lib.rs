@@ -12,6 +12,6 @@ pub struct Provenance {
     pub version: version::Version,
     pub content_hash: content::Hash,
     pub roughtime: roughtime::Roughtime,
-    pub jwt: humm_provenance_jwt::Jwt,
+    pub jwt: humm_jwt::Jwt,
     pub device_signature: humm_provenance_device::signature::Signature,
 }

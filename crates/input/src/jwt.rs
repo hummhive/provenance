@@ -1,16 +1,17 @@
+use humm_jwt as jwt;
 use humm_provenance_device as device;
-use humm_provenance_jwt as jwt;
+use humm_provenance_idp as idp;
 use humm_provenance_roughtime as roughtime;
 use jwt_compact::AlgorithmExt;
 use std::convert::TryInto;
 
 pub struct JwtInput {
     pub device_pub_key: device::keys::PubKey,
-    pub idp_keypair: jwt::idp::Keypair,
+    pub idp_keypair: idp::key::Keypair,
     pub time_keys_hash: roughtime::ecosystem::server::public_key::KeysHash,
 }
 
-impl From<&JwtInput> for jwt::idp::Keypair {
+impl From<&JwtInput> for idp::key::Keypair {
     fn from(input: &JwtInput) -> Self {
         input.idp_keypair
     }
@@ -22,7 +23,7 @@ impl From<&JwtInput> for device::keys::PubKey {
     }
 }
 
-impl std::convert::TryFrom<&JwtInput> for jwt::idp::PubKey {
+impl std::convert::TryFrom<&JwtInput> for idp::key::PubKey {
     type Error = jwt::error::JwtError;
     fn try_from(input: &JwtInput) -> Result<Self, Self::Error> {
         Ok(Self::try_from(&input.idp_keypair)?)

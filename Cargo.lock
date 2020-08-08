@@ -265,6 +265,45 @@ version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "humm_crypto"
+version = "0.0.1"
+dependencies = [
+ "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sha2 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "humm_jwt"
+version = "0.0.1"
+dependencies = [
+ "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "humm_crypto 0.0.1",
+ "humm_provenance_device 0.0.1",
+ "humm_provenance_idp 0.0.1",
+ "humm_provenance_roughtime 0.0.1",
+ "jwt-compact 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "humm_jwt_check"
+version = "0.0.1"
+dependencies = [
+ "clap 2.33.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "humm_crypto 0.0.1",
+ "humm_jwt 0.0.1",
+]
+
+[[package]]
 name = "humm_provenance_binary"
 version = "0.0.1"
 dependencies = [
@@ -279,23 +318,10 @@ version = "0.0.1"
 dependencies = [
  "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "humm_provenance_crypto 0.0.1",
+ "humm_crypto 0.0.1",
  "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
- "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "humm_provenance_crypto"
-version = "0.0.1"
-dependencies = [
- "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
- "sha2 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -305,10 +331,21 @@ version = "0.0.1"
 dependencies = [
  "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "humm_crypto 0.0.1",
  "humm_provenance_content 0.0.1",
- "humm_provenance_crypto 0.0.1",
  "humm_provenance_version 0.0.1",
  "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "humm_provenance_idp"
+version = "0.0.1"
+dependencies = [
+ "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "humm_crypto 0.0.1",
  "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -322,10 +359,11 @@ dependencies = [
  "byteorder 1.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono 0.4.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "humm_crypto 0.0.1",
+ "humm_jwt 0.0.1",
  "humm_provenance_content 0.0.1",
- "humm_provenance_crypto 0.0.1",
  "humm_provenance_device 0.0.1",
- "humm_provenance_jwt 0.0.1",
+ "humm_provenance_idp 0.0.1",
  "humm_provenance_roughtime 0.0.1",
  "humm_provenance_version 0.0.1",
  "jwt-compact 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -338,28 +376,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "humm_provenance_jwt"
-version = "0.0.1"
-dependencies = [
- "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "humm_provenance_crypto 0.0.1",
- "humm_provenance_device 0.0.1",
- "humm_provenance_roughtime 0.0.1",
- "jwt-compact 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde_json 1.0.56 (registry+https://github.com/rust-lang/crates.io-index)",
- "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "humm_provenance_roughtime"
 version = "0.0.1"
 dependencies = [
  "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "ed25519-dalek 1.0.0-pre.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "humm_provenance_crypto 0.0.1",
+ "humm_crypto 0.0.1",
  "jwt-compact 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "ring 0.13.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "roughenough 1.1.8 (registry+https://github.com/rust-lang/crates.io-index)",

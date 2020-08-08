@@ -16,7 +16,7 @@ impl From<&ChainItemInput> for roughtime::crypto::Nonce {
         let mut bytes = vec![];
         bytes.extend(data_hash.as_ref());
         bytes.extend(input.blind.as_ref());
-        let inner = humm_provenance_crypto::sha512::Sha512Hash::from(&bytes);
+        let inner = humm_crypto::sha512::Sha512Hash::from(&bytes);
         Self::from(inner)
     }
 }

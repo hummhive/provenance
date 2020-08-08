@@ -1,9 +1,9 @@
 use crate::chain::Data;
 
-pub struct Nonce(humm_provenance_crypto::sha512::Sha512Hash);
+pub struct Nonce(humm_crypto::sha512::Sha512Hash);
 
-impl From<humm_provenance_crypto::sha512::Sha512Hash> for Nonce {
-    fn from(sha512: humm_provenance_crypto::sha512::Sha512Hash) -> Self {
+impl From<humm_crypto::sha512::Sha512Hash> for Nonce {
+    fn from(sha512: humm_crypto::sha512::Sha512Hash) -> Self {
         Self(sha512)
     }
 }
@@ -14,7 +14,7 @@ impl AsRef<[u8]> for Nonce {
     }
 }
 
-pub struct DataHash(humm_provenance_crypto::sha512::Sha512Hash);
+pub struct DataHash(humm_crypto::sha512::Sha512Hash);
 
 impl From<&crate::chain::Data> for DataHash {
     fn from(data: &Data) -> Self {

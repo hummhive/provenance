@@ -16,7 +16,7 @@ client = [ "roughenough" ]
 thiserror = "1.0.18"
 ed25519-dalek = "1.0.0-pre.3"
 serde = { version = "=1.0.104", features = [ "derive" ] }
-humm_provenance_crypto = { path = "../crypto" }
+humm_crypto = { path = "../crypto" }
 base64 = "0.12.1"
 serde_json = "1.0.53"
 roughenough = { version = "1.1.8", optional = true }

@@ -18,7 +18,7 @@ impl From<(KeysHash, PubKey)> for ProvenanceClaims {
     }
 }
 
-#[derive(serde::Serialize)]
+#[derive(Debug, serde::Serialize)]
 pub struct Token(String);
 
 impl From<String> for Token {
@@ -27,8 +27,16 @@ impl From<String> for Token {
     }
 }
 
+impl From<&str> for Token {
+    fn from(s: &str) -> Self {
+        Self::from(s.to_string())
+    }
+}
+
 impl Token {
     pub fn as_str(&self) -> &str {
         self.0.as_str()
     }
+
+    pub fn validate(&self) -> 
 }
