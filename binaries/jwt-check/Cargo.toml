@@ -13,3 +13,9 @@ humm_crypto = { path = "../../crates/crypto" }
 humm_jwt = { path = "../../crates/jwt" }
 clap = "2"
 exitcode = "1"
+
+[profile.release]
+opt-level = 'z'  # Optimize for size.
+lto = true
+codegen-units = 1
+panic = 'abort'

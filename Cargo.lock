@@ -345,6 +345,7 @@ version = "0.0.1"
 dependencies = [
  "anyhow 1.0.31 (registry+https://github.com/rust-lang/crates.io-index)",
  "base64 0.12.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "chrono 0.4.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "humm_crypto 0.0.1",
  "humm_provenance_device 0.0.1",
  "humm_provenance_idp 0.0.1",

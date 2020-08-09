@@ -19,5 +19,5 @@ pub enum JwtError {
     Validation(#[from] jwt_compact::ValidationError),
 
     #[error(transparent)]
-    Anyhow(#[from] anyhow::Error)
+    Anyhow(#[from] anyhow::Error),
 }

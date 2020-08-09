@@ -14,7 +14,7 @@ pub struct ProvenanceClaims {
 }
 
 #[derive(serde::Serialize, serde::Deserialize)]
-pub struct NoClaims { }
+pub struct NoClaims {}
 
 impl From<(KeysHash, PubKey)> for ProvenanceClaims {
     fn from((time_keys_hash, audience): (KeysHash, PubKey)) -> Self {
@@ -47,7 +47,17 @@ impl TryFrom<(crypto::ed25519::public::Ed25519PubKey, &str)> for Token {
                 &untrusted,
                 &jwt_compact::alg::Ed25519VerifyingKey::from_slice(pubkey.as_ref())?,
             )?;
-        signed_token.token.claims().validate_expiration(TimeOptions::default())?;
+        signed_token
+            .token
+            .claims()
+            .validate_expiration(TimeOptions::default())?;
+        // .validate_expiration(TimeOptions {
+        //     current_time: Some(chrono::DateTime::<chrono::Utc>::from_utc(
+        //         chrono::NaiveDateTime::from_timestamp(1_000_000_000_000, 0),
+        //         chrono::Utc,
+        //     )),
+        //     ..Default::default()
+        // })?;
         Ok(Self(signed_token))
     }
 }
