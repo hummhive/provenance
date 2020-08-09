@@ -9,23 +9,37 @@ fn main() {
     let app = crate::app::cli::app();
     let matches = app.get_matches();
 
-    // unwrap the jwt and pubkey
-    // this is an unwrap because args are required by the clap builder
-    let jwt_token = humm_jwt::token::Token::from(matches.value_of(crate::jwt::constant::NAME).unwrap());
+    let jwt_string = match matches.value_of(crate::jwt::constant::NAME) {
+        Some(v) => v,
+        None => {
+            eprintln!("Error getting jwt from args");
+            std::process::exit(exitcode::DATAERR);
+        },
+    };
     // wrap the raw input in `"` so it can be treated as a json string internally
     let pubkey_portable = crypto::ed25519::public::PubKeyPortable::from(
         format!(
             r#""{}""#,
-            matches.value_of(
+            match matches.value_of(
                 crate::pubkey::constant::NAME
-            ).unwrap()
+            ) {
+                Some(v) => v,
+                None => {
+                    eprintln!("Error getting pubkey from args");
+                    std::process::exit(exitcode::DATAERR);
+                },
+            }
         )
     );
 
-    println!("{:?}", jwt_token);
-    println!("{:?}", pubkey_portable);
+    let pubkey = crypto::ed25519::public::Ed25519PubKey::try_from(&pubkey_portable).unwrap();
 
-    let pubkey = crypto::ed25519::public::Ed25519PubKey::try_from(&pubkey_portable);
+    match humm_jwt::token::Token::try_from((pubkey, jwt_string)) {
+        Ok(_) => std::process::exit(exitcode::OK),
+        Err(e) => {
+            eprintln!("Error validating jwt token: {}", e);
+            std::process::exit(exitcode::DATAERR);
+        },
+    };
 
-    dbg!(&pubkey);
 }

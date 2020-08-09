@@ -1,6 +1,6 @@
+use humm_crypto::sha512::SHA512_OUTPUT_LEN;
 use humm_jwt as jwt;
 use humm_provenance_content as content;
-use humm_crypto::sha512::SHA512_OUTPUT_LEN;
 use humm_provenance_device as device;
 use humm_provenance_version as version;
 use std::convert::TryFrom;

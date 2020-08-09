@@ -13,5 +13,11 @@ pub enum JwtError {
     JwtParse(#[from] jwt_compact::ParseError),
 
     #[error(transparent)]
-    CreationError(#[from] jwt_compact::CreationError),
+    Creation(#[from] jwt_compact::CreationError),
+
+    #[error(transparent)]
+    Validation(#[from] jwt_compact::ValidationError),
+
+    #[error(transparent)]
+    Anyhow(#[from] anyhow::Error)
 }

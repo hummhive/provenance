@@ -5,6 +5,9 @@ pub enum CryptoError {
 
     #[error(transparent)]
     Json(#[from] serde_json::error::Error),
+
+    #[error(transparent)]
+    JwtCompact(#[from] ed25519_compact::Error),
 }
 
 impl From<ed25519_dalek::SignatureError> for CryptoError {

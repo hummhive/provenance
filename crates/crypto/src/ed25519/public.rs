@@ -1,10 +1,24 @@
-use serde::de::Error;
-use std::convert::TryInto;
-use std::convert::TryFrom;
 use crate::error;
+use serde::de::Error;
+use std::convert::TryFrom;
+use std::convert::TryInto;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Ed25519PubKey([u8; ed25519_dalek::PUBLIC_KEY_LENGTH]);
+
+impl TryFrom<Ed25519PubKey> for ed25519_dalek::PublicKey {
+    type Error = error::CryptoError;
+    fn try_from(pubkey: Ed25519PubKey) -> Result<Self, Self::Error> {
+        Ok(Self::from_bytes(&pubkey.0)?)
+    }
+}
+
+impl TryFrom<Ed25519PubKey> for ed25519_compact::PublicKey {
+    type Error = error::CryptoError;
+    fn try_from(pubkey: Ed25519PubKey) -> Result<Self, Self::Error> {
+        Ok(Self::from_slice(&pubkey.0)?)
+    }
+}
 
 #[cfg(test)]
 #[test]
