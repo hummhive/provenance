@@ -1,0 +1,19 @@
+FROM ubuntu
+
+RUN apt-get update -y
+
+RUN apt-get install binutils -y
+RUN apt-get install curl -y
+RUN apt-get install gcc -y
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+
+ENV PATH ${PATH}:/root/.cargo/bin
+
+RUN mkdir -p /dist
+
+ADD . /build
+
+WORKDIR /build
+
+CMD bash ./build.sh && cp /build/target/release/humm_jwt_check /dist/humm_jwt_check.ubuntu

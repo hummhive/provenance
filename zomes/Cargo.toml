@@ -28,5 +28,3 @@ crate-type = [ "cdylib", "rlib" ]
 # version = "0.2.0"
 # default-features = false
 # features = [ "ed25519-dalek" ]
-
-[patch.crates-io]

@@ -7,3 +7,9 @@ members = [
  "crates/input",
  "zomes"
 ]
+
+[profile.release]
+opt-level = 'z'  # Optimize for size.
+lto = true
+codegen-units = 1
+panic = 'abort'

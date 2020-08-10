@@ -23,6 +23,6 @@ chrono = "0.4"
 
 [dependencies.jwt-compact]
 git = "https://github.com/slowli/jwt-compact"
-ref = "e22f11457c3bf9c4275150478f1f1c5ccdbd96a0"
+rev = "e22f11457c3bf9c4275150478f1f1c5ccdbd96a0"
 default-features = false
 features = [ "ed25519-compact" ]
