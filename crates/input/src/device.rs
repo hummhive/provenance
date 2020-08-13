@@ -1,7 +1,7 @@
+use humm_crypto::sha512::SHA512_OUTPUT_LEN;
+use humm_jwt as jwt;
 use humm_provenance_content as content;
-use humm_provenance_crypto::sha512::SHA512_OUTPUT_LEN;
 use humm_provenance_device as device;
-use humm_provenance_jwt as jwt;
 use humm_provenance_version as version;
 use std::convert::TryFrom;
 use std::convert::TryInto;
@@ -14,7 +14,7 @@ pub struct SignatureInput {
 }
 
 impl TryFrom<&SignatureInput> for device::signature::Signature {
-    type Error = humm_provenance_crypto::error::CryptoError;
+    type Error = humm_crypto::error::CryptoError;
     fn try_from(signature_input: &SignatureInput) -> Result<Self, Self::Error> {
         let mut to_sign: Vec<u8> = vec![];
 
@@ -24,7 +24,7 @@ impl TryFrom<&SignatureInput> for device::signature::Signature {
             <[u8; ed25519_dalek::SIGNATURE_LENGTH]>::from(&signature_input.jwt_signature).iter(),
         );
 
-        let ed25519_sig: humm_provenance_crypto::ed25519::signature::Ed25519Signature =
+        let ed25519_sig: humm_crypto::ed25519::signature::Ed25519Signature =
             (&crate::ed25519::signature::Ed25519SignatureInput {
                 keypair: (&signature_input.device_keypair).into(),
                 to_sign,

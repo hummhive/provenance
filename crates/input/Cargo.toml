@@ -21,8 +21,9 @@ byteorder = "1"
 humm_provenance_device = { path = "../device" }
 humm_provenance_version = { path = "../version" }
 humm_provenance_content = { path = "../content" }
-humm_provenance_jwt = { path = "../jwt" }
-humm_provenance_crypto = { path = "../crypto" }
+humm_provenance_idp = { path = "../idp" }
+humm_jwt = { path = "../jwt" }
+humm_crypto = { path = "../crypto" }
 roughenough = "1.1.8"
 
 [dependencies.humm_provenance_roughtime]

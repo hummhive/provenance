@@ -21,12 +21,10 @@ crate-type = [ "cdylib", "rlib" ]
 
 # serde = "=1.0.104"
 # ed25519-dalek = "1.0.0-pre.3"
-# humm_provenance_crypto = { path = "../../crates/crypto" }
+# humm_crypto = { path = "../../crates/crypto" }
 # test_wasm_common = { version = "=0.0.1", path = "../../wasm_common" }
 
 # [dependencies.jwt-compact]
 # version = "0.2.0"
 # default-features = false
 # features = [ "ed25519-dalek" ]
-
-[patch.crates-io]

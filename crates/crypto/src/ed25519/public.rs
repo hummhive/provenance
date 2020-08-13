@@ -1,8 +1,24 @@
+use crate::error;
 use serde::de::Error;
+use std::convert::TryFrom;
 use std::convert::TryInto;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Ed25519PubKey([u8; ed25519_dalek::PUBLIC_KEY_LENGTH]);
+
+impl TryFrom<Ed25519PubKey> for ed25519_dalek::PublicKey {
+    type Error = error::CryptoError;
+    fn try_from(pubkey: Ed25519PubKey) -> Result<Self, Self::Error> {
+        Ok(Self::from_bytes(&pubkey.0)?)
+    }
+}
+
+impl TryFrom<Ed25519PubKey> for ed25519_compact::PublicKey {
+    type Error = error::CryptoError;
+    fn try_from(pubkey: Ed25519PubKey) -> Result<Self, Self::Error> {
+        Ok(Self::from_slice(&pubkey.0)?)
+    }
+}
 
 #[cfg(test)]
 #[test]
@@ -114,4 +130,33 @@ fn ed25519pub_key_from_dalek_keypair() {
     let pubkey = crate::ed25519::public::Ed25519PubKey::from(&keypair);
 
     assert_eq!(keypair.public.to_bytes(), pubkey.as_ref(),);
+}
+
+#[derive(Debug)]
+pub struct PubKeyPortable(String);
+
+impl From<String> for PubKeyPortable {
+    fn from(s: String) -> Self {
+        Self(s)
+    }
+}
+
+impl From<&str> for PubKeyPortable {
+    fn from(s: &str) -> Self {
+        Self::from(s.to_string())
+    }
+}
+
+impl TryFrom<&ed25519_dalek::Keypair> for PubKeyPortable {
+    type Error = error::CryptoError;
+    fn try_from(keypair: &ed25519_dalek::Keypair) -> Result<Self, Self::Error> {
+        Ok(Self(serde_json::to_string(&Ed25519PubKey::from(keypair))?))
+    }
+}
+
+impl TryFrom<&PubKeyPortable> for Ed25519PubKey {
+    type Error = error::CryptoError;
+    fn try_from(pub_key_portable: &PubKeyPortable) -> Result<Self, Self::Error> {
+        Ok(serde_json::from_str(&pub_key_portable.0)?)
+    }
 }

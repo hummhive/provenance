@@ -1,5 +1,5 @@
 use crate::error;
-use humm_provenance_crypto as crypto;
+use humm_crypto as crypto;
 use std::convert::TryFrom;
 
 /// the only key type currently used in ecosystem.json is ed25519

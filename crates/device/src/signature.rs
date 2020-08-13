@@ -1,4 +1,4 @@
-use humm_provenance_crypto as crypto;
+use humm_crypto as crypto;
 
 #[derive(serde::Serialize, Clone)]
 pub struct Signature(crypto::ed25519::signature::Ed25519Signature);

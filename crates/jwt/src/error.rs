@@ -1,7 +1,10 @@
 #[derive(thiserror::Error, Debug)]
 pub enum JwtError {
     #[error(transparent)]
-    Crypto(#[from] humm_provenance_crypto::error::CryptoError),
+    Idp(#[from] humm_provenance_idp::error::IdpError),
+
+    #[error(transparent)]
+    Crypto(#[from] humm_crypto::error::CryptoError),
 
     #[error(transparent)]
     Base64Decode(#[from] base64::DecodeError),
@@ -10,5 +13,11 @@ pub enum JwtError {
     JwtParse(#[from] jwt_compact::ParseError),
 
     #[error(transparent)]
-    CreationError(#[from] jwt_compact::CreationError),
+    Creation(#[from] jwt_compact::CreationError),
+
+    #[error(transparent)]
+    Validation(#[from] jwt_compact::ValidationError),
+
+    #[error(transparent)]
+    Anyhow(#[from] anyhow::Error),
 }
